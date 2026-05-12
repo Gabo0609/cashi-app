@@ -1,0 +1,635 @@
+{
+  "knownSymbols": {
+    "Nota": [
+      {
+        "name": "Nota",
+        "module": "@/types/nota",
+        "isDefault": false
+      }
+    ],
+    "z": [
+      {
+        "name": "z",
+        "module": "zod",
+        "isDefault": true,
+        "asDefinition": "* as z"
+      }
+    ],
+    "Router": [
+      {
+        "name": "Router",
+        "module": "expo-router",
+        "isDefault": true,
+        "asDefinition": "* as Router"
+      }
+    ],
+    "unstable_settings": [
+      {
+        "name": "unstable_settings",
+        "path": "c:\\Users\\gabri\\cashi-app\\app\\_layout.tsx",
+        "type": "const",
+        "isDefault": false
+      }
+    ],
+    "RootLayout": [
+      {
+        "name": "RootLayout",
+        "path": "c:\\Users\\gabri\\cashi-app\\app\\_layout.tsx",
+        "type": "function",
+        "isDefault": true
+      }
+    ],
+    "DefaultTheme": [
+      {
+        "name": "DefaultTheme",
+        "module": "@react-navigation/native",
+        "isDefault": false
+      }
+    ],
+    "ThemeProvider": [
+      {
+        "name": "ThemeProvider",
+        "module": "@react-navigation/native",
+        "isDefault": false
+      }
+    ],
+    "Stack": [
+      {
+        "name": "Stack",
+        "module": "expo-router",
+        "isDefault": false
+      }
+    ],
+    "StatusBar": [
+      {
+        "name": "StatusBar",
+        "module": "expo-status-bar",
+        "isDefault": false
+      }
+    ],
+    "colors": [
+      {
+        "name": "colors",
+        "module": "@/constants/theme",
+        "isDefault": false
+      },
+      {
+        "name": "colors",
+        "path": "c:\\Users\\gabri\\cashi-app\\constants\\theme.ts",
+        "type": "const",
+        "isDefault": false
+      }
+    ],
+    "useLogin": [
+      {
+        "name": "useLogin",
+        "path": "c:\\Users\\gabri\\cashi-app\\hooks\\useLogin.ts",
+        "type": "function",
+        "isDefault": false
+      },
+      {
+        "name": "useLogin",
+        "module": "@/hooks/useLogin",
+        "isDefault": false
+      }
+    ],
+    "useNotes": [
+      {
+        "name": "useNotes",
+        "module": "@/hooks/useNotes",
+        "isDefault": false
+      }
+    ],
+    "AsyncStorage": [
+      {
+        "name": "AsyncStorage",
+        "module": "@react-native-async-storage/async-storage",
+        "isDefault": true
+      }
+    ],
+    "useCallback": [
+      {
+        "name": "useCallback",
+        "module": "react",
+        "isDefault": false
+      }
+    ],
+    "useEffect": [
+      {
+        "name": "useEffect",
+        "module": "react",
+        "isDefault": false
+      }
+    ],
+    "useState": [
+      {
+        "name": "useState",
+        "module": "react",
+        "isDefault": false
+      }
+    ],
+    "useNotaForm": [
+      {
+        "name": "useNotaForm",
+        "module": "@/hooks/useNotaForm",
+        "isDefault": false
+      }
+    ],
+    "router": [
+      {
+        "name": "router",
+        "module": "expo-router",
+        "isDefault": false
+      }
+    ],
+    "HapticTab": [
+      {
+        "name": "HapticTab",
+        "module": "@/components/haptic-tab",
+        "isDefault": false
+      },
+      {
+        "name": "HapticTab",
+        "path": "c:\\Users\\gabri\\cashi-app\\components\\haptic-tab.tsx",
+        "type": "function",
+        "isDefault": false
+      }
+    ],
+    "BottomTabBarButtonProps": [
+      {
+        "name": "BottomTabBarButtonProps",
+        "module": "@react-navigation/bottom-tabs",
+        "isDefault": false
+      }
+    ],
+    "PlatformPressable": [
+      {
+        "name": "PlatformPressable",
+        "module": "@react-navigation/elements",
+        "isDefault": false
+      }
+    ],
+    "Haptics": [
+      {
+        "name": "Haptics",
+        "module": "expo-haptics",
+        "isDefault": true,
+        "asDefinition": "* as Haptics"
+      }
+    ],
+    "NoteItem": [
+      {
+        "name": "NoteItem",
+        "module": "@/components/note-item",
+        "isDefault": true
+      }
+    ],
+    "StyleSheet": [
+      {
+        "name": "StyleSheet",
+        "module": "react-native",
+        "isDefault": false
+      }
+    ],
+    "Text": [
+      {
+        "name": "Text",
+        "module": "react-native",
+        "isDefault": false
+      }
+    ],
+    "TouchableOpacity": [
+      {
+        "name": "TouchableOpacity",
+        "module": "react-native",
+        "isDefault": false
+      }
+    ],
+    "useNavigation": [
+      {
+        "name": "useNavigation",
+        "module": "expo-router",
+        "isDefault": false
+      }
+    ],
+    "CommonActions": [
+      {
+        "name": "CommonActions",
+        "module": "@react-navigation/native",
+        "isDefault": false
+      }
+    ],
+    "View": [
+      {
+        "name": "View",
+        "module": "react-native",
+        "isDefault": false
+      }
+    ],
+    "SafeAreaView": [
+      {
+        "name": "SafeAreaView",
+        "module": "react-native",
+        "isDefault": false
+      },
+      {
+        "name": "SafeAreaView",
+        "module": "react-native-safe-area-context",
+        "isDefault": false
+      }
+    ],
+    "Tabs": [
+      {
+        "name": "Tabs",
+        "module": "expo-router",
+        "isDefault": false
+      }
+    ],
+    "React": [
+      {
+        "name": "React",
+        "module": "react",
+        "isDefault": true
+      }
+    ],
+    "IconSymbol": [
+      {
+        "name": "IconSymbol",
+        "path": "c:\\Users\\gabri\\cashi-app\\components\\ui\\icon-symbol.tsx",
+        "type": "function",
+        "isDefault": false
+      },
+      {
+        "name": "IconSymbol",
+        "module": "@/components/ui/icon-symbol",
+        "isDefault": false
+      }
+    ],
+    "Fonts": [
+      {
+        "name": "Fonts",
+        "path": "c:\\Users\\gabri\\cashi-app\\constants\\theme.ts",
+        "type": "const",
+        "isDefault": false
+      }
+    ],
+    "Platform": [
+      {
+        "name": "Platform",
+        "module": "react-native",
+        "isDefault": false
+      }
+    ],
+    "SymbolView": [
+      {
+        "name": "SymbolView",
+        "module": "expo-symbols",
+        "isDefault": false
+      }
+    ],
+    "SymbolViewProps": [
+      {
+        "name": "SymbolViewProps",
+        "module": "expo-symbols",
+        "isDefault": false
+      }
+    ],
+    "SymbolWeight": [
+      {
+        "name": "SymbolWeight",
+        "module": "expo-symbols",
+        "isDefault": false
+      }
+    ],
+    "StyleProp": [
+      {
+        "name": "StyleProp",
+        "module": "react-native",
+        "isDefault": false
+      }
+    ],
+    "ViewStyle": [
+      {
+        "name": "ViewStyle",
+        "module": "react-native",
+        "isDefault": false
+      }
+    ],
+    "MaterialIcons": [
+      {
+        "name": "MaterialIcons",
+        "module": "@expo/vector-icons/MaterialIcons",
+        "isDefault": true
+      }
+    ],
+    "ComponentProps": [
+      {
+        "name": "ComponentProps",
+        "module": "react",
+        "isDefault": false
+      }
+    ],
+    "OpaqueColorValue": [
+      {
+        "name": "OpaqueColorValue",
+        "module": "react-native",
+        "isDefault": false
+      }
+    ],
+    "type StyleProp": [
+      {
+        "name": "type StyleProp",
+        "module": "react-native",
+        "isDefault": false
+      }
+    ],
+    "type TextStyle": [
+      {
+        "name": "type TextStyle",
+        "module": "react-native",
+        "isDefault": false
+      }
+    ],
+    "NotesLayout": [
+      {
+        "name": "NotesLayout",
+        "path": "c:\\Users\\gabri\\cashi-app\\app\\(tabs)\\notes\\_layout.tsx",
+        "type": "function",
+        "isDefault": true
+      }
+    ],
+    "CreateNoteScreen": [
+      {
+        "name": "CreateNoteScreen",
+        "path": "c:\\Users\\gabri\\cashi-app\\app\\(tabs)\\notes\\create.tsx",
+        "type": "function",
+        "isDefault": true
+      }
+    ],
+    "KeyboardAvoidingView": [
+      {
+        "name": "KeyboardAvoidingView",
+        "module": "react-native",
+        "isDefault": false
+      }
+    ],
+    "ScrollView": [
+      {
+        "name": "ScrollView",
+        "module": "react-native",
+        "isDefault": false
+      }
+    ],
+    "TextInput": [
+      {
+        "name": "TextInput",
+        "module": "react-native",
+        "isDefault": false
+      }
+    ],
+    "NotesListScreen": [
+      {
+        "name": "NotesListScreen",
+        "path": "c:\\Users\\gabri\\cashi-app\\app\\(tabs)\\notes\\index.tsx",
+        "type": "function",
+        "isDefault": true
+      }
+    ],
+    "useFocusEffect": [
+      {
+        "name": "useFocusEffect",
+        "module": "expo-router",
+        "isDefault": false
+      },
+      {
+        "name": "useFocusEffect",
+        "module": "@react-navigation/native",
+        "isDefault": false
+      }
+    ],
+    "ActivityIndicator": [
+      {
+        "name": "ActivityIndicator",
+        "module": "react-native",
+        "isDefault": false
+      }
+    ],
+    "FlatList": [
+      {
+        "name": "FlatList",
+        "module": "react-native",
+        "isDefault": false
+      }
+    ],
+    "NoteDetailScreen": [
+      {
+        "name": "NoteDetailScreen",
+        "path": "c:\\Users\\gabri\\cashi-app\\app\\(tabs)\\notes\\[id]\\index.tsx",
+        "type": "function",
+        "isDefault": true
+      }
+    ],
+    "useLocalSearchParams": [
+      {
+        "name": "useLocalSearchParams",
+        "module": "expo-router",
+        "isDefault": false
+      }
+    ],
+    "Alert": [
+      {
+        "name": "Alert",
+        "module": "react-native",
+        "isDefault": false
+      }
+    ],
+    "EditNoteScreen": [
+      {
+        "name": "EditNoteScreen",
+        "path": "c:\\Users\\gabri\\cashi-app\\app\\(tabs)\\notes\\[id]\\edit.tsx",
+        "type": "function",
+        "isDefault": true
+      }
+    ],
+    "useMemo": [
+      {
+        "name": "useMemo",
+        "module": "react",
+        "isDefault": false
+      }
+    ],
+    "Category": [
+      {
+        "name": "Category",
+        "path": "c:\\Users\\gabri\\cashi-app\\types\\category.ts",
+        "type": "interface",
+        "isDefault": false
+      }
+    ],
+    "TransactionType": [
+      {
+        "name": "TransactionType",
+        "path": "c:\\Users\\gabri\\cashi-app\\types\\transaction.ts",
+        "type": "type",
+        "isDefault": false
+      }
+    ],
+    "Transaction": [
+      {
+        "name": "Transaction",
+        "path": "c:\\Users\\gabri\\cashi-app\\types\\transaction.ts",
+        "type": "interface",
+        "isDefault": false
+      }
+    ],
+    "categorySchema": [
+      {
+        "name": "categorySchema",
+        "path": "c:\\Users\\gabri\\cashi-app\\schemas\\category.schema.ts",
+        "type": "const",
+        "isDefault": false
+      }
+    ],
+    "CategoryFormData": [
+      {
+        "name": "CategoryFormData",
+        "path": "c:\\Users\\gabri\\cashi-app\\schemas\\category.schema.ts",
+        "type": "type",
+        "isDefault": false
+      }
+    ],
+    "transactionSchema": [
+      {
+        "name": "transactionSchema",
+        "path": "c:\\Users\\gabri\\cashi-app\\schemas\\transaction.schema.ts",
+        "type": "const",
+        "isDefault": false
+      }
+    ],
+    "TransactionFormData": [
+      {
+        "name": "TransactionFormData",
+        "path": "c:\\Users\\gabri\\cashi-app\\schemas\\transaction.schema.ts",
+        "type": "type",
+        "isDefault": false
+      }
+    ],
+    "useCategories": [
+      {
+        "name": "useCategories",
+        "path": "c:\\Users\\gabri\\cashi-app\\hooks\\useCategories.ts",
+        "type": "function",
+        "isDefault": false
+      }
+    ],
+    "useTransactions": [
+      {
+        "name": "useTransactions",
+        "path": "c:\\Users\\gabri\\cashi-app\\hooks\\useTransactions.ts",
+        "type": "function",
+        "isDefault": false
+      }
+    ],
+    "useCategoryForm": [
+      {
+        "name": "useCategoryForm",
+        "path": "c:\\Users\\gabri\\cashi-app\\hooks\\useCategoryForm.ts",
+        "type": "function",
+        "isDefault": false
+      }
+    ],
+    "useTransactionForm": [
+      {
+        "name": "useTransactionForm",
+        "path": "c:\\Users\\gabri\\cashi-app\\hooks\\useTransactionForm.ts",
+        "type": "function",
+        "isDefault": false
+      }
+    ],
+    "useRouter": [
+      {
+        "name": "useRouter",
+        "module": "expo-router",
+        "isDefault": false
+      }
+    ],
+    "TransactionsScreen": [
+      {
+        "name": "TransactionsScreen",
+        "path": "c:\\Users\\gabri\\cashi-app\\app\\(tabs)\\index.tsx",
+        "type": "function",
+        "isDefault": true
+      }
+    ],
+    "CategoriesScreen": [
+      {
+        "name": "CategoriesScreen",
+        "path": "c:\\Users\\gabri\\cashi-app\\app\\(tabs)\\categories.tsx",
+        "type": "function",
+        "isDefault": true
+      }
+    ],
+    "BalanceScreen": [
+      {
+        "name": "BalanceScreen",
+        "path": "c:\\Users\\gabri\\cashi-app\\app\\(tabs)\\balance.tsx",
+        "type": "function",
+        "isDefault": true
+      }
+    ],
+    "CategoryFormScreen": [
+      {
+        "name": "CategoryFormScreen",
+        "path": "c:\\Users\\gabri\\cashi-app\\app\\(tabs)\\category\\[id].tsx",
+        "type": "function",
+        "isDefault": true
+      }
+    ],
+    "TransactionFormScreen": [
+      {
+        "name": "TransactionFormScreen",
+        "path": "c:\\Users\\gabri\\cashi-app\\app\\(tabs)\\transaction\\[id].tsx",
+        "type": "function",
+        "isDefault": true
+      }
+    ],
+    "LoginScreen": [
+      {
+        "name": "LoginScreen",
+        "path": "c:\\Users\\gabri\\cashi-app\\app\\index.tsx",
+        "type": "function",
+        "isDefault": true
+      }
+    ],
+    "namespace": [
+      {
+        "name": "namespace",
+        "path": "c:\\Users\\gabri\\cashi-app\\.expo\\types\\router.d.ts",
+        "isDefault": false
+      }
+    ],
+    "__routes": [
+      {
+        "name": "__routes",
+        "path": "c:\\Users\\gabri\\cashi-app\\.expo\\types\\router.d.ts",
+        "type": "interface",
+        "isDefault": false
+      }
+    ],
+    "TabsLayout": [
+      {
+        "name": "TabsLayout",
+        "path": "c:\\Users\\gabri\\cashi-app\\app\\(tabs)\\_layout.tsx",
+        "type": "function",
+        "isDefault": true
+      }
+    ],
+    "Ionicons": [
+      {
+        "name": "Ionicons",
+        "module": "@expo/vector-icons",
+        "isDefault": false
+      }
+    ]
+  }
+}
