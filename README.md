@@ -6,32 +6,36 @@ Cashi es una aplicación móvil desarrollada con React Native y Expo para gestio
 
 La aplicación permite:
 
-- iniciar sesión
-- administrar categorías
-- registrar ingresos y egresos
-- calcular balances automáticamente
-- almacenar información localmente usando AsyncStorage
+- Iniciar sesión
+- Administrar categorías
+- Registrar ingresos y egresos
+- Calcular balances automáticamente
+- Adjuntar comprobantes fotográficos
+- Registrar ubicación GPS en las transacciones
+- Almacenar información localmente utilizando AsyncStorage
 
-El proyecto fue desarrollado utilizando una arquitectura basada en hooks personalizados, validación con Zod y navegación con Expo Router.
+El proyecto fue desarrollado utilizando una arquitectura basada en hooks personalizados, validación con Zod y navegación mediante Expo Router.
 
 ---
 
 # Tecnologías utilizadas
 
-| Tecnología   | Uso                                 |
-| ------------ | ----------------------------------- |
-| React Native | Desarrollo de aplicación móvil      |
-| Expo         | Entorno de desarrollo y compilación |
-| Expo Router  | Navegación basada en archivos       |
-| TypeScript   | Tipado estático                     |
-| AsyncStorage | Persistencia de datos local         |
-| Zod          | Validación de formularios           |
+| Tecnología        | Uso                            |
+| ----------------- | ------------------------------ |
+| React Native      | Desarrollo de aplicación móvil |
+| Expo              | Entorno de desarrollo          |
+| Expo Router       | Navegación basada en archivos  |
+| TypeScript        | Tipado estático                |
+| AsyncStorage      | Persistencia local             |
+| Zod               | Validación de formularios      |
+| Expo Image Picker | Cámara y galería               |
+| Expo Location     | Geolocalización GPS            |
 
 ---
 
 # Estructura del proyecto
 
-````txt
+```txt
 app/
   index.tsx
   _layout.tsx
@@ -54,6 +58,8 @@ hooks/
   useCategoryForm.ts
   useTransactions.ts
   useTransactionForm.ts
+  useImagePicker.ts
+  useLocation.ts
 
 schemas/
   category.schema.ts
@@ -66,71 +72,75 @@ types/
 assets/
 components/
 constants/
+```
 
-
----
-
-# Parte 3 — Arquitectura
-
-```md
 ---
 
 # Arquitectura
 
 El proyecto separa responsabilidades utilizando hooks personalizados.
 
-## Hooks principales
-
-### useLogin
+## useLogin
 
 Encargado de:
 
-- manejar autenticación local
-- validar credenciales
-- navegar hacia las tabs
+- Manejar autenticación local
+- Validar credenciales
+- Navegar hacia las tabs principales
 
----
-
-### useCategories
+## useCategories
 
 Encargado de:
 
-- cargar categorías
-- crear categorías
-- editar categorías
-- eliminar categorías
-- persistir datos usando AsyncStorage
+- Cargar categorías
+- Crear categorías
+- Editar categorías
+- Eliminar categorías
+- Persistir datos utilizando AsyncStorage
 
----
-
-### useCategoryForm
+## useCategoryForm
 
 Encargado de:
 
-- manejar estado del formulario
-- validar datos con Zod
-- enviar formularios
+- Manejar estado del formulario
+- Validar datos utilizando Zod
+- Enviar formularios
 
----
-
-### useTransactions
+## useTransactions
 
 Encargado de:
 
 - CRUD de transacciones
-- persistencia local
-- cálculo de balance
-- cálculo de ingresos y egresos
+- Persistencia local
+- Cálculo de balance
+- Cálculo de ingresos y egresos
+- Almacenamiento de comprobantes
+- Almacenamiento de coordenadas GPS
 
----
-
-### useTransactionForm
+## useTransactionForm
 
 Encargado de:
 
-- estado del formulario
-- validación con Zod
-- edición y creación de transacciones
+- Estado del formulario
+- Validación con Zod
+- Creación y edición de transacciones
+
+## useImagePicker
+
+Encargado de:
+
+- Tomar fotografías utilizando la cámara
+- Seleccionar imágenes desde la galería
+- Gestionar permisos de acceso
+- Administrar comprobantes fotográficos
+
+## useLocation
+
+Encargado de:
+
+- Solicitar permisos de ubicación
+- Obtener coordenadas GPS
+- Gestionar almacenamiento temporal de ubicación
 
 ---
 
@@ -138,20 +148,71 @@ Encargado de:
 
 ## Login
 
-La aplicación utiliza un login local simple.
+La aplicación utiliza autenticación local simple.
 
 ### Credenciales
 
 ```txt
 Usuario: gabo@test.com
 Contraseña: 1234
-
+```
 
 ---
 
-# Parte 5 — Persistencia y validaciones
+## Gestión de categorías
 
-```md
+Permite:
+
+- Crear categorías
+- Editar categorías
+- Eliminar categorías
+- Persistir información localmente
+
+---
+
+## Gestión de transacciones
+
+Permite:
+
+- Crear transacciones
+- Editar transacciones
+- Eliminar transacciones
+- Registrar ingresos
+- Registrar egresos
+- Asociar categorías
+
+---
+
+## Comprobante fotográfico
+
+Cada transacción puede almacenar un comprobante mediante:
+
+- Cámara del dispositivo
+- Galería de imágenes
+
+La imagen queda asociada a la transacción y se almacena junto a los demás datos.
+
+---
+
+## Geolocalización GPS
+
+Cada transacción puede registrar la ubicación actual del dispositivo.
+
+La información almacenada corresponde a:
+
+- Latitud
+- Longitud
+
+---
+
+## Balance financiero
+
+La aplicación calcula automáticamente:
+
+- Total de ingresos
+- Total de egresos
+- Balance disponible
+
 ---
 
 # Persistencia de datos
@@ -163,13 +224,10 @@ La aplicación utiliza AsyncStorage para almacenar información localmente.
 ```txt
 categories
 transactions
+```
 
+La información permanece disponible incluso después de cerrar la aplicación.
 
----
-
-# Parte 6 — Instalación y ejecución
-
-```md
 ---
 
 # Instalación
@@ -177,14 +235,21 @@ transactions
 ## Clonar repositorio
 
 ```bash
-git clone <url-del-repositorio>
+git clone https://github.com/Gabo0609/cashi-app.git
+```
 
+## Instalar dependencias
 
----
+```bash
+npm install
+```
 
-# Parte 7 — Flujo de prueba y cierre
+## Ejecutar proyecto
 
-```md
+```bash
+npx expo start
+```
+
 ---
 
 # Flujo de prueba recomendado
@@ -193,24 +258,15 @@ git clone <url-del-repositorio>
 2. Crear categoría
 3. Crear ingreso
 4. Crear egreso
-5. Revisar balance
-6. Editar categoría
-7. Editar transacción
-8. Eliminar transacción
-9. Cerrar aplicación
-10. Abrir nuevamente
-11. Verificar persistencia de datos
-
----
-
-# TypeScript
-
-El proyecto utiliza TypeScript para:
-
-- tipado seguro
-- validación de datos
-- reducción de errores
-- mejor mantenibilidad
+5. Adjuntar comprobante fotográfico
+6. Obtener ubicación GPS
+7. Guardar transacción
+8. Revisar balance
+9. Editar transacción
+10. Eliminar transacción
+11. Cerrar aplicación
+12. Abrir nuevamente
+13. Verificar persistencia de datos
 
 ---
 
@@ -229,22 +285,36 @@ La navegación fue desarrollada utilizando Expo Router.
 ```txt
 transaction/[id].tsx
 category/[id].tsx
+```
 
+---
 
-Uso de Inteligencia Artificial
+# TypeScript
+
+El proyecto utiliza TypeScript para:
+
+- Tipado seguro
+- Validación de datos
+- Reducción de errores
+- Mejor mantenibilidad
+
+---
+
+# Uso de Inteligencia Artificial
 
 Se utilizó ChatGPT como apoyo para:
 
-organización de arquitectura
-resolución de errores TypeScript
-adaptación del template inicial
-generación de ejemplos de hooks
-revisión de estructura del proyecto
-apoyo durante el desarrollo
+- Organización de arquitectura
+- Resolución de errores TypeScript
+- Adaptación del template inicial
+- Generación de ejemplos de hooks
+- Revisión de estructura del proyecto
+- Apoyo durante el desarrollo
 
 Todo el código fue revisado, probado y adaptado manualmente durante el desarrollo.
 
-Autor
+---
+
+# Autor
 
 Gabriel Alvarez
-````
