@@ -10,6 +10,11 @@ interface TransactionInput {
   type: TransactionType;
   description: string;
   categoryId: string;
+  photoUri?: string;
+  location?: {
+    latitude: number;
+    longitude: number;
+  };
 }
 
 export function useTransactions() {
@@ -22,7 +27,6 @@ export function useTransactions() {
       setLoading(true);
 
       const raw = await AsyncStorage.getItem(STORAGE_KEY);
-
       const data: Transaction[] = raw ? JSON.parse(raw) : [];
 
       setTransactions(data);
@@ -40,7 +44,6 @@ export function useTransactions() {
 
   const persistTransactions = async (nextTransactions: Transaction[]) => {
     await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(nextTransactions));
-
     setTransactions(nextTransactions);
   };
 
@@ -52,6 +55,8 @@ export function useTransactions() {
       description: input.description,
       categoryId: input.categoryId,
       date: new Date().toISOString(),
+      photoUri: input.photoUri,
+      location: input.location,
     };
 
     await persistTransactions([...transactions, newTransaction]);
@@ -66,6 +71,8 @@ export function useTransactions() {
             type: input.type,
             description: input.description,
             categoryId: input.categoryId,
+            photoUri: input.photoUri,
+            location: input.location,
           }
         : transaction,
     );

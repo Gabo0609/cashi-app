@@ -2,12 +2,12 @@ import { useFocusEffect, useRouter } from "expo-router";
 import { useCallback } from "react";
 
 import {
-    FlatList,
-    SafeAreaView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  FlatList,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
 import { useCategories } from "../../hooks/useCategories";
@@ -63,6 +63,14 @@ export default function TransactionsScreen() {
             </Text>
 
             <Text style={styles.text}>Monto: ${item.amount}</Text>
+
+            {item.photoUri ? (
+              <Text style={styles.text}>📷 Tiene comprobante</Text>
+            ) : null}
+
+            {item.location ? (
+              <Text style={styles.text}>📍 Tiene ubicación registrada</Text>
+            ) : null}
 
             <View style={styles.actions}>
               <TouchableOpacity

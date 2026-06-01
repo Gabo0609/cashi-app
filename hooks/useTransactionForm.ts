@@ -2,11 +2,14 @@ import { router } from "expo-router";
 import { useState } from "react";
 
 import {
-    transactionSchema,
-    type TransactionFormData,
+  transactionSchema,
+  type TransactionFormData,
 } from "../schemas/transaction.schema";
 
-import type { TransactionType } from "../types/transaction";
+import type {
+  TransactionLocation,
+  TransactionType,
+} from "../types/transaction";
 
 interface UseTransactionFormProps {
   initialValues?: Partial<TransactionFormData>;
@@ -31,11 +34,19 @@ export function useTransactionForm({
 
   const [categoryId, setCategoryId] = useState(initialValues?.categoryId ?? "");
 
+  const [photoUri, setPhotoUri] = useState(initialValues?.photoUri ?? "");
+
+  const [location, setLocation] = useState<TransactionLocation | undefined>(
+    initialValues?.location,
+  );
+
   const [errors, setErrors] = useState<{
     amount?: string;
     type?: string;
     description?: string;
     categoryId?: string;
+    photoUri?: string;
+    location?: string;
   }>({});
 
   const [submitting, setSubmitting] = useState(false);
@@ -56,12 +67,22 @@ export function useTransactionForm({
     setCategoryId(nextCategoryId);
   };
 
+  const handlePhotoChange = (nextPhotoUri: string) => {
+    setPhotoUri(nextPhotoUri);
+  };
+
+  const handleLocationChange = (nextLocation?: TransactionLocation) => {
+    setLocation(nextLocation);
+  };
+
   const handleSubmit = async () => {
     const result = transactionSchema.safeParse({
       amount: Number(amount),
       type,
       description,
       categoryId,
+      photoUri: photoUri || undefined,
+      location,
     });
 
     if (!result.success) {
@@ -72,6 +93,8 @@ export function useTransactionForm({
         type: fieldErrors.type?.[0],
         description: fieldErrors.description?.[0],
         categoryId: fieldErrors.categoryId?.[0],
+        photoUri: fieldErrors.photoUri?.[0],
+        location: fieldErrors.location?.[0],
       });
 
       return;
@@ -82,7 +105,6 @@ export function useTransactionForm({
 
     try {
       await onSubmit(result.data);
-
       router.back();
     } finally {
       setSubmitting(false);
@@ -94,12 +116,16 @@ export function useTransactionForm({
     type,
     description,
     categoryId,
+    photoUri,
+    location,
     errors,
     submitting,
     handleAmountChange,
     handleTypeChange,
     handleDescriptionChange,
     handleCategoryChange,
+    handlePhotoChange,
+    handleLocationChange,
     handleSubmit,
   };
 }
