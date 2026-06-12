@@ -3,6 +3,7 @@ import { useCallback } from "react";
 
 import {
   FlatList,
+  Image,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -28,7 +29,7 @@ export default function TransactionsScreen() {
     }, [loadTransactions, loadCategories]),
   );
 
-  const getCategoryName = (categoryId: string) => {
+  const getCategoryName = (categoryId: number) => {
     return (
       categories.find((category) => category.id === categoryId)?.name ??
       "Sin categoría"
@@ -46,7 +47,7 @@ export default function TransactionsScreen() {
 
       <FlatList
         data={transactions}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.id.toString()}
         ListEmptyComponent={
           <Text style={styles.emptyText}>No hay transacciones todavía</Text>
         }
@@ -64,13 +65,24 @@ export default function TransactionsScreen() {
 
             <Text style={styles.text}>Monto: ${item.amount}</Text>
 
-            {item.photoUri ? (
-              <Text style={styles.text}>📷 Tiene comprobante</Text>
-            ) : null}
+            {item.receiptUrl ? (
+              <View style={styles.detailBox}>
+                <Text style={styles.detailTitle}>Comprobante adjunto</Text>
+                <Image source={{ uri: item.receiptUrl }} style={styles.image} />
+              </View>
+            ) : (
+              <Text style={styles.mutedText}>Sin comprobante</Text>
+            )}
 
-            {item.location ? (
-              <Text style={styles.text}>📍 Tiene ubicación registrada</Text>
-            ) : null}
+            {item.latitude && item.longitude ? (
+              <View style={styles.detailBox}>
+                <Text style={styles.detailTitle}>Ubicación registrada</Text>
+                <Text style={styles.text}>Latitud: {item.latitude}</Text>
+                <Text style={styles.text}>Longitud: {item.longitude}</Text>
+              </View>
+            ) : (
+              <Text style={styles.mutedText}>Sin ubicación registrada</Text>
+            )}
 
             <View style={styles.actions}>
               <TouchableOpacity
@@ -84,7 +96,7 @@ export default function TransactionsScreen() {
 
               <TouchableOpacity
                 style={styles.deleteButton}
-                onPress={() => deleteTransaction(item.id)}
+                onPress={() => deleteTransaction(String(item.id))}
               >
                 <Text style={styles.buttonText}>Eliminar</Text>
               </TouchableOpacity>
@@ -123,7 +135,7 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 8,
     marginBottom: 12,
-    gap: 4,
+    gap: 6,
   },
   title: {
     fontSize: 18,
@@ -132,6 +144,27 @@ const styles = StyleSheet.create({
   },
   text: {
     color: "#3f3f46",
+  },
+  mutedText: {
+    color: "#71717a",
+    fontStyle: "italic",
+  },
+  detailBox: {
+    backgroundColor: "#f4f4f5",
+    padding: 10,
+    borderRadius: 8,
+    marginTop: 8,
+    gap: 4,
+  },
+  detailTitle: {
+    fontWeight: "700",
+    color: "#18181b",
+  },
+  image: {
+    width: "100%",
+    height: 160,
+    borderRadius: 8,
+    marginTop: 6,
   },
   actions: {
     flexDirection: "row",

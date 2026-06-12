@@ -2,12 +2,13 @@ import { useFocusEffect, useRouter } from "expo-router";
 import { useCallback } from "react";
 
 import {
-    FlatList,
-    SafeAreaView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  Alert,
+  FlatList,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
 import { useCategories } from "../../hooks/useCategories";
@@ -23,6 +24,27 @@ export default function CategoriesScreen() {
     }, [loadCategories]),
   );
 
+  const handleDeleteCategory = (id: number) => {
+    Alert.alert(
+      "Eliminar categoría",
+      "¿Seguro que quieres eliminar esta categoría?",
+      [
+        {
+          text: "Cancelar",
+          style: "cancel",
+        },
+        {
+          text: "Eliminar",
+          style: "destructive",
+          onPress: async () => {
+            await deleteCategory(id);
+            await loadCategories();
+          },
+        },
+      ],
+    );
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity
@@ -34,7 +56,7 @@ export default function CategoriesScreen() {
 
       <FlatList
         data={categories}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.id.toString()}
         ListEmptyComponent={
           <Text style={styles.emptyText}>No hay categorías todavía</Text>
         }
@@ -54,7 +76,7 @@ export default function CategoriesScreen() {
 
               <TouchableOpacity
                 style={styles.deleteButton}
-                onPress={() => deleteCategory(item.id)}
+                onPress={() => handleDeleteCategory(item.id)}
               >
                 <Text style={styles.buttonText}>Eliminar</Text>
               </TouchableOpacity>

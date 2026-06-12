@@ -6,12 +6,18 @@ export interface TransactionLocation {
 }
 
 export interface Transaction {
-  id: string;
+  id: number;
   amount: number;
   type: TransactionType;
   description: string;
   date: string;
-  categoryId: string;
-  photoUri?: string;
-  location?: TransactionLocation;
+  categoryId: number;
+  userId?: number;
+  receiptUrl?: string | null;
+  latitude?: number | null;
+  longitude?: number | null;
+  category?: {
+    id: number;
+    name: string;
+  };
 }

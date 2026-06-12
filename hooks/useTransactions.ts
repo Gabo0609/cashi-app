@@ -1,9 +1,7 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
+import { apiRequest } from "../lib/api";
 import type { Transaction, TransactionType } from "../types/transaction";
-
-const STORAGE_KEY = "transactions";
 
 interface TransactionInput {
   amount: number;
@@ -17,99 +15,119 @@ interface TransactionInput {
   };
 }
 
+interface BalanceResponse {
+  totalIncome: number;
+  totalExpense: number;
+  balance: number;
+}
+
 export function useTransactions() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [totalIncome, setTotalIncome] = useState(0);
+  const [totalExpense, setTotalExpense] = useState(0);
+  const [balance, setBalance] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  const loadBalance = useCallback(async () => {
+    const data = await apiRequest<BalanceResponse>("/transactions/balance");
+
+    setTotalIncome(data.totalIncome);
+    setTotalExpense(data.totalExpense);
+    setBalance(data.balance);
+  }, []);
 
   const loadTransactions = useCallback(async () => {
     try {
       setLoading(true);
+      setError("");
 
-      const raw = await AsyncStorage.getItem(STORAGE_KEY);
-      const data: Transaction[] = raw ? JSON.parse(raw) : [];
+      const data = await apiRequest<Transaction[]>("/transactions");
 
       setTransactions(data);
-      setError("");
-    } catch {
+      await loadBalance();
+    } catch (err) {
+      console.log("ERROR LOAD TRANSACTIONS:", err);
       setError("No se pudieron cargar las transacciones");
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [loadBalance]);
 
   useEffect(() => {
     loadTransactions();
   }, [loadTransactions]);
 
-  const persistTransactions = async (nextTransactions: Transaction[]) => {
-    await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(nextTransactions));
-    setTransactions(nextTransactions);
-  };
-
   const createTransaction = async (input: TransactionInput) => {
-    const newTransaction: Transaction = {
-      id: Date.now().toString(),
-      amount: input.amount,
-      type: input.type,
-      description: input.description,
-      categoryId: input.categoryId,
-      date: new Date().toISOString(),
-      photoUri: input.photoUri,
-      location: input.location,
-    };
+    const newTransaction = await apiRequest<Transaction>("/transactions", {
+      method: "POST",
+      body: {
+        amount: input.amount,
+        type: input.type,
+        description: input.description,
+        date: new Date().toISOString(),
+        categoryId: Number(input.categoryId),
+        receiptUrl: input.photoUri,
+        latitude: input.location?.latitude,
+        longitude: input.location?.longitude,
+      },
+    });
 
-    await persistTransactions([...transactions, newTransaction]);
+    setTransactions((current) => [...current, newTransaction]);
+    await loadBalance();
   };
 
   const updateTransaction = async (id: string, input: TransactionInput) => {
-    const updated = transactions.map((transaction) =>
-      transaction.id === id
-        ? {
-            ...transaction,
-            amount: input.amount,
-            type: input.type,
-            description: input.description,
-            categoryId: input.categoryId,
-            photoUri: input.photoUri,
-            location: input.location,
-          }
-        : transaction,
+    const updatedTransaction = await apiRequest<Transaction>(
+      `/transactions/${id}`,
+      {
+        method: "PATCH",
+        body: {
+          amount: input.amount,
+          type: input.type,
+          description: input.description,
+          date: new Date().toISOString(),
+          categoryId: Number(input.categoryId),
+          receiptUrl: input.photoUri,
+          latitude: input.location?.latitude,
+          longitude: input.location?.longitude,
+        },
+      },
     );
 
-    await persistTransactions(updated);
+    setTransactions((current) =>
+      current.map((transaction) =>
+        transaction.id === Number(id) ? updatedTransaction : transaction,
+      ),
+    );
+
+    await loadBalance();
   };
 
   const deleteTransaction = async (id: string) => {
-    const filtered = transactions.filter(
-      (transaction) => transaction.id !== id,
+    await apiRequest(`/transactions/${id}`, {
+      method: "DELETE",
+    });
+
+    setTransactions((current) =>
+      current.filter((transaction) => transaction.id !== Number(id)),
     );
 
-    await persistTransactions(filtered);
+    await loadBalance();
   };
 
   const getTransactionById = (id: string) => {
-    return transactions.find((transaction) => transaction.id === id);
+    return transactions.find((transaction) => transaction.id === Number(id));
   };
 
-  const totalIncome = useMemo(() => {
-    return transactions
-      .filter((transaction) => transaction.type === "income")
-      .reduce((sum, transaction) => sum + transaction.amount, 0);
+  const orderedTransactions = useMemo(() => {
+    return [...transactions].sort((a, b) => {
+      return new Date(b.date).getTime() - new Date(a.date).getTime();
+    });
   }, [transactions]);
-
-  const totalExpense = useMemo(() => {
-    return transactions
-      .filter((transaction) => transaction.type === "expense")
-      .reduce((sum, transaction) => sum + transaction.amount, 0);
-  }, [transactions]);
-
-  const balance = useMemo(() => {
-    return totalIncome - totalExpense;
-  }, [totalIncome, totalExpense]);
 
   return {
-    transactions,
+    transactions: orderedTransactions,
     loading,
     error,
     loadTransactions,

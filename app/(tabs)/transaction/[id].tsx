@@ -28,8 +28,16 @@ export default function TransactionFormScreen() {
 
   const transaction = id !== "new" ? getTransactionById(id) : undefined;
 
-  const imagePicker = useImagePicker(transaction?.photoUri ?? "");
-  const locationHook = useLocation(transaction?.location);
+  const imagePicker = useImagePicker(transaction?.receiptUrl ?? "");
+
+  const locationHook = useLocation(
+    transaction?.latitude && transaction?.longitude
+      ? {
+          latitude: transaction.latitude,
+          longitude: transaction.longitude,
+        }
+      : undefined,
+  );
 
   const {
     amount,
@@ -49,9 +57,15 @@ export default function TransactionFormScreen() {
           amount: transaction.amount,
           type: transaction.type,
           description: transaction.description,
-          categoryId: transaction.categoryId,
-          photoUri: transaction.photoUri,
-          location: transaction.location,
+          categoryId: String(transaction.categoryId),
+          photoUri: transaction.receiptUrl ?? "",
+          location:
+            transaction.latitude && transaction.longitude
+              ? {
+                  latitude: transaction.latitude,
+                  longitude: transaction.longitude,
+                }
+              : undefined,
         }
       : undefined,
 
@@ -149,12 +163,12 @@ export default function TransactionFormScreen() {
             ) : (
               categories.map((category) => (
                 <TouchableOpacity
-                  key={category.id}
+                  key={category.id.toString()}
                   style={[
                     styles.categoryButton,
-                    categoryId === category.id && styles.selectedButton,
+                    Number(categoryId) === category.id && styles.selectedButton,
                   ]}
-                  onPress={() => handleCategoryChange(category.id)}
+                  onPress={() => handleCategoryChange(String(category.id))}
                 >
                   <Text style={styles.optionText}>{category.name}</Text>
                 </TouchableOpacity>
@@ -226,11 +240,11 @@ export default function TransactionFormScreen() {
             {locationHook.location ? (
               <View style={styles.locationCard}>
                 <Text style={styles.text}>
-                  Latitude: {locationHook.location.latitude}
+                  Latitud: {locationHook.location.latitude}
                 </Text>
 
                 <Text style={styles.text}>
-                  Longitude: {locationHook.location.longitude}
+                  Longitud: {locationHook.location.longitude}
                 </Text>
 
                 <TouchableOpacity

@@ -1,5 +1,6 @@
 import { router } from "expo-router";
 import { useState } from "react";
+import { Alert } from "react-native";
 
 import {
   transactionSchema,
@@ -33,7 +34,6 @@ export function useTransactionForm({
   );
 
   const [categoryId, setCategoryId] = useState(initialValues?.categoryId ?? "");
-
   const [photoUri, setPhotoUri] = useState(initialValues?.photoUri ?? "");
 
   const [location, setLocation] = useState<TransactionLocation | undefined>(
@@ -50,30 +50,6 @@ export function useTransactionForm({
   }>({});
 
   const [submitting, setSubmitting] = useState(false);
-
-  const handleAmountChange = (text: string) => {
-    setAmount(text);
-  };
-
-  const handleTypeChange = (nextType: TransactionType) => {
-    setType(nextType);
-  };
-
-  const handleDescriptionChange = (text: string) => {
-    setDescription(text);
-  };
-
-  const handleCategoryChange = (nextCategoryId: string) => {
-    setCategoryId(nextCategoryId);
-  };
-
-  const handlePhotoChange = (nextPhotoUri: string) => {
-    setPhotoUri(nextPhotoUri);
-  };
-
-  const handleLocationChange = (nextLocation?: TransactionLocation) => {
-    setLocation(nextLocation);
-  };
 
   const handleSubmit = async () => {
     const result = transactionSchema.safeParse({
@@ -106,6 +82,9 @@ export function useTransactionForm({
     try {
       await onSubmit(result.data);
       router.back();
+    } catch (err) {
+      console.log("ERROR SUBMIT TRANSACTION:", err);
+      Alert.alert("Error", "No se pudo guardar la transacción");
     } finally {
       setSubmitting(false);
     }
@@ -120,12 +99,12 @@ export function useTransactionForm({
     location,
     errors,
     submitting,
-    handleAmountChange,
-    handleTypeChange,
-    handleDescriptionChange,
-    handleCategoryChange,
-    handlePhotoChange,
-    handleLocationChange,
+    handleAmountChange: setAmount,
+    handleTypeChange: setType,
+    handleDescriptionChange: setDescription,
+    handleCategoryChange: setCategoryId,
+    handlePhotoChange: setPhotoUri,
+    handleLocationChange: setLocation,
     handleSubmit,
   };
 }

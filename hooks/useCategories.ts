@@ -1,9 +1,8 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useCallback, useEffect, useState } from "react";
+import { Alert } from "react-native";
 
+import { apiRequest } from "../lib/api";
 import type { Category } from "../types/category";
-
-const STORAGE_KEY = "categories";
 
 export function useCategories() {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -13,14 +12,12 @@ export function useCategories() {
   const loadCategories = useCallback(async () => {
     try {
       setLoading(true);
-
-      const raw = await AsyncStorage.getItem(STORAGE_KEY);
-
-      const data: Category[] = raw ? JSON.parse(raw) : [];
-
-      setCategories(data);
       setError("");
-    } catch {
+
+      const data = await apiRequest<Category[]>("/categories");
+      setCategories(data);
+    } catch (err) {
+      console.log("ERROR LOAD CATEGORIES:", err);
       setError("No se pudieron cargar las categorías");
     } finally {
       setLoading(false);
@@ -31,42 +28,67 @@ export function useCategories() {
     loadCategories();
   }, [loadCategories]);
 
-  const persistCategories = async (nextCategories: Category[]) => {
-    await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(nextCategories));
-
-    setCategories(nextCategories);
-  };
-
   const createCategory = async (name: string) => {
-    const newCategory: Category = {
-      id: Date.now().toString(),
-      name,
-    };
+    try {
+      setError("");
 
-    await persistCategories([...categories, newCategory]);
+      const category = await apiRequest<Category>("/categories", {
+        method: "POST",
+        body: { name },
+      });
+
+      setCategories((current) => [...current, category]);
+    } catch (err) {
+      console.log("ERROR CREATE CATEGORY:", err);
+      Alert.alert("Error", "No se pudo crear la categoría");
+    }
   };
 
-  const updateCategory = async (id: string, name: string) => {
-    const updated = categories.map((category) =>
-      category.id === id
-        ? {
-            ...category,
-            name,
-          }
-        : category,
-    );
+  const updateCategory = async (id: string | number, name: string) => {
+    try {
+      setError("");
 
-    await persistCategories(updated);
+      const category = await apiRequest<Category>(`/categories/${id}`, {
+        method: "PATCH",
+        body: { name },
+      });
+
+      setCategories((current) =>
+        current.map((item) => (item.id === Number(id) ? category : item)),
+      );
+    } catch (err) {
+      console.log("ERROR UPDATE CATEGORY:", err);
+      Alert.alert("Error", "No se pudo actualizar la categoría");
+    }
   };
 
-  const deleteCategory = async (id: string) => {
-    const filtered = categories.filter((category) => category.id !== id);
+  const deleteCategory = async (id: string | number) => {
+    try {
+      setError("");
 
-    await persistCategories(filtered);
+      await apiRequest(`/categories/${id}`, {
+        method: "DELETE",
+      });
+
+      setCategories((current) =>
+        current.filter((category) => category.id !== Number(id)),
+      );
+
+      Alert.alert(
+        "Categoría eliminada",
+        "La categoría fue eliminada correctamente",
+      );
+    } catch (err) {
+      console.log("ERROR DELETE CATEGORY:", err);
+      Alert.alert(
+        "No se pudo eliminar",
+        "La categoría puede estar asociada a una transacción o hubo un error en el servidor.",
+      );
+    }
   };
 
-  const getCategoryById = (id: string) => {
-    return categories.find((category) => category.id === id);
+  const getCategoryById = (id: string | number) => {
+    return categories.find((category) => category.id === Number(id));
   };
 
   return {
