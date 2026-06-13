@@ -1,28 +1,43 @@
 import { useCallback, useEffect, useState } from "react";
 import { Alert } from "react-native";
 
+import { useAuth } from "../contexts/AuthContext";
 import { apiRequest } from "../lib/api";
 import type { Category } from "../types/category";
 
 export function useCategories() {
+  const { token } = useAuth();
+
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  const getErrorMessage = (err: unknown) => {
+    return err instanceof Error ? err.message : "Error de conexión";
+  };
+
   const loadCategories = useCallback(async () => {
+    if (!token) {
+      setCategories([]);
+      setLoading(false);
+      return;
+    }
+
     try {
       setLoading(true);
       setError("");
 
-      const data = await apiRequest<Category[]>("/categories");
+      const data = await apiRequest<Category[]>("/categories", {
+        token,
+      });
+
       setCategories(data);
     } catch (err) {
-      console.log("ERROR LOAD CATEGORIES:", err);
-      setError("No se pudieron cargar las categorías");
+      setError(getErrorMessage(err));
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [token]);
 
   useEffect(() => {
     loadCategories();
@@ -35,12 +50,14 @@ export function useCategories() {
       const category = await apiRequest<Category>("/categories", {
         method: "POST",
         body: { name },
+        token,
       });
 
       setCategories((current) => [...current, category]);
     } catch (err) {
-      console.log("ERROR CREATE CATEGORY:", err);
-      Alert.alert("Error", "No se pudo crear la categoría");
+      const message = getErrorMessage(err);
+      setError(message);
+      Alert.alert("Error", message);
     }
   };
 
@@ -51,14 +68,16 @@ export function useCategories() {
       const category = await apiRequest<Category>(`/categories/${id}`, {
         method: "PATCH",
         body: { name },
+        token,
       });
 
       setCategories((current) =>
         current.map((item) => (item.id === Number(id) ? category : item)),
       );
     } catch (err) {
-      console.log("ERROR UPDATE CATEGORY:", err);
-      Alert.alert("Error", "No se pudo actualizar la categoría");
+      const message = getErrorMessage(err);
+      setError(message);
+      Alert.alert("Error", message);
     }
   };
 
@@ -68,6 +87,7 @@ export function useCategories() {
 
       await apiRequest(`/categories/${id}`, {
         method: "DELETE",
+        token,
       });
 
       setCategories((current) =>
@@ -79,11 +99,9 @@ export function useCategories() {
         "La categoría fue eliminada correctamente",
       );
     } catch (err) {
-      console.log("ERROR DELETE CATEGORY:", err);
-      Alert.alert(
-        "No se pudo eliminar",
-        "La categoría puede estar asociada a una transacción o hubo un error en el servidor.",
-      );
+      const message = getErrorMessage(err);
+      setError(message);
+      Alert.alert("No se pudo eliminar", message);
     }
   };
 

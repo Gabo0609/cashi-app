@@ -1,29 +1,23 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-
 import { API_URL } from "../constants/api";
 
 type ApiOptions = {
   method?: "GET" | "POST" | "PATCH" | "DELETE";
   body?: unknown;
-  auth?: boolean;
+  token?: string | null;
 };
 
 export async function apiRequest<T>(
   path: string,
   options: ApiOptions = {},
 ): Promise<T> {
-  const { method = "GET", body, auth = true } = options;
+  const { method = "GET", body, token } = options;
 
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
   };
 
-  if (auth) {
-    const token = await AsyncStorage.getItem("token");
-
-    if (token) {
-      headers.Authorization = `Bearer ${token}`;
-    }
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
   }
 
   const response = await fetch(`${API_URL}${path}`, {
@@ -35,7 +29,7 @@ export async function apiRequest<T>(
   const data = await response.json().catch(() => null);
 
   if (!response.ok) {
-    throw new Error(data?.message || "Error en la solicitud");
+    throw new Error(data?.error || data?.message || "Error en la solicitud");
   }
 
   return data as T;

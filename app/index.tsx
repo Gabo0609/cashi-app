@@ -16,6 +16,7 @@ export default function LoginScreen() {
     email,
     password,
     error,
+    loading,
     handleEmailChange,
     handlePasswordChange,
     handleLogin,
@@ -42,6 +43,9 @@ export default function LoginScreen() {
             placeholderTextColor="#71717a"
             keyboardType="email-address"
             autoCapitalize="none"
+            autoCorrect={false}
+            textContentType="emailAddress"
+            autoComplete="email"
             value={email}
             onChangeText={handleEmailChange}
             style={styles.input}
@@ -53,17 +57,24 @@ export default function LoginScreen() {
             value={password}
             onChangeText={handlePasswordChange}
             secureTextEntry
+            autoCapitalize="none"
+            autoCorrect={false}
+            textContentType="password"
+            autoComplete="password"
             style={styles.input}
           />
 
-          <TouchableOpacity style={styles.button} onPress={handleLogin}>
-            <Text style={styles.buttonText}>Ingresar</Text>
+          <TouchableOpacity
+            style={[styles.button, loading && styles.disabledButton]}
+            onPress={handleLogin}
+            disabled={loading}
+          >
+            <Text style={styles.buttonText}>
+              {loading ? "Ingresando..." : "Ingresar"}
+            </Text>
           </TouchableOpacity>
 
           {error ? <Text style={styles.errorText}>{error}</Text> : null}
-
-          <Text style={styles.hint}>Usuario: gabo@test.com</Text>
-          <Text style={styles.hint}>Clave: 1234</Text>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -120,6 +131,9 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
   },
+  disabledButton: {
+    opacity: 0.6,
+  },
   buttonText: {
     color: "#ffffff",
     fontSize: 16,
@@ -128,10 +142,5 @@ const styles = StyleSheet.create({
   errorText: {
     color: "#dc2626",
     marginTop: 12,
-  },
-  hint: {
-    color: "#71717a",
-    marginTop: 8,
-    fontSize: 12,
   },
 });

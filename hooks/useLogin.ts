@@ -1,12 +1,22 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import { useState } from "react";
 
-import { API_URL } from "../constants/api";
+import { useAuth } from "../contexts/AuthContext";
+import { apiRequest } from "../lib/api";
+
+interface LoginResponse {
+  token: string;
+  user: {
+    id: number;
+    email: string;
+  };
+}
 
 export function useLogin() {
-  const [email, setEmail] = useState("gabo2@test.com");
-  const [password, setPassword] = useState("123456");
+  const { login } = useAuth();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -19,34 +29,30 @@ export function useLogin() {
   };
 
   const handleLogin = async () => {
+    const cleanEmail = email.trim().toLowerCase();
+
+    if (!cleanEmail || !password) {
+      setError("Ingresa tu correo y contraseña");
+      return;
+    }
+
     try {
       setLoading(true);
       setError("");
 
-      const response = await fetch(`${API_URL}/auth/login`, {
+      const data = await apiRequest<LoginResponse>("/auth/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
+        body: {
+          email: cleanEmail,
           password,
-        }),
+        },
       });
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        setError(data.message || "Email o contraseña incorrectos");
-        return;
-      }
-
-      await AsyncStorage.setItem("token", data.token);
-      await AsyncStorage.setItem("user", JSON.stringify(data.user));
+      await login(data.token);
 
       router.replace("/(tabs)" as never);
-    } catch {
-      setError("No se pudo conectar con el servidor");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Error de conexión");
     } finally {
       setLoading(false);
     }

@@ -1,1 +1,1 @@
-export const API_URL = "http://172.16.43.59:3000";
+export const API_URL = "https://cashi-api-03az.onrender.com";
